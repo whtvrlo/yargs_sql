@@ -3,9 +3,7 @@ const { Movie } = require("../models/models");
 
 const addMovie = async (movieObj) => {
     try {
-        console.log("add movie index hit")
         const movie = await Movie.create(movieObj)
-        console.log("addMovie index finished")
         console.log(`We added ${movie.title}.`);
 
     } catch (err) {
@@ -13,6 +11,17 @@ const addMovie = async (movieObj) => {
     }
 }
 
+const listMovies = async () => {
+    try {
+        const movies = await Movie.findAll({});
+        console.log(movies.every(user => user instanceof Movie));
+        console.log("All Movies", JSON. stringify(movies, null, 2));
+    } catch (error) {
+        console.log(err)
+    }
+}
+
 module.exports = {
-    addMovie
+    addMovie,
+    listMovies
 }

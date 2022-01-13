@@ -2,13 +2,14 @@ require("dotenv").config();
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const commandLineInput = yargs(hideBin(process.argv)).argv;
+const { addMovie, listMovies } = require("./utils/index")
 
 const { Movie } = require("./models/models");
 console.log(Movie);
 
 
 const { connection } = require("./db/connection");
-const { addMovie } = require("./utils/index")
+// const { addMovie } = require("./utils/index")
 
 const app = async(commandLineInput) => {
 
@@ -27,6 +28,8 @@ const app = async(commandLineInput) => {
             actor: commandLineInput.actor,
             rating: commandLineInput.rating
         });
+        } else if (commandLineInput.list) {
+            await listMovies();
         }
         connection.close();
         process.exit();
