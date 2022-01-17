@@ -5,28 +5,14 @@ const { Movie } = require("../models/models");
 const addMovie = async (movieObj) => {
     try {
         const movie = await Movie.create(movieObj)
-        console.log(`We added ${movie.title}.`);
+        console.log(`${movie.title} has been added.`);
 
     } catch (err) {
         console.log(err)
     }
 }
 
-// DESTROY SINGLE INSTANCE FUNCTION
-const deleteMovie = async (title, actor, rating) =>{
-    try {
-        const movie = await Movie.findOne({where: title, actor, rating});
-        await movie.destroy();
-        console.log(`${movie.title} has been succesfully deleted.`);
-        listMovies();
-        
-    } catch (error) {
-        console.log(error)
-        
-    }
-}
-
-// DELETEALLMOVIES
+// DELETE ALL MOVIES
 const deleteAllMovies = async (movieObj) => {
     try {
         const movie = await Movie.destroy(movieObj)
@@ -36,16 +22,47 @@ const deleteAllMovies = async (movieObj) => {
     }
 }
 
+// DESTROY SINGLE INSTANCE FUNCTION
+const deleteMovie = async (where) =>{
+    try {
+        const movie = await Movie.findOne({ where });
+        await movie.destroy();
+        console.log(`${movie.title} has been succesfully deleted.`);
+        console.log(`Updated list of movies:`);
+        await listMovies();
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
+
 // LIST MOVIES
 const listMovies = async () => {
     try {
         const movies = await Movie.findAll({});
         console.log(movies.every(user => user instanceof Movie));
-        console.log("All Movies", JSON. stringify(movies, null, 2));
+        console.log("All Movies", JSON.stringify(movies, null, 2)); // converts javascript object to a JSON string. param: value, replacer, space. If value is null or not provided, all props of object are included in JSON string.
     } catch (error) {
-        console.log(err)
+        console.log(error)
     }
 }
+
+// // UPDATE MOVIE
+const updateMovie = async (where, update) => {
+    try {
+    const movie = await Movie.findOne({ where });
+    const newMovie = await movie.update(update); 
+    console.log(JSON.stringify(newMovie, null, 2));
+    return newMovie;
+        
+    } catch (error) {
+        console.log(error)
+        
+    }
+
+}
+
 
 
 
@@ -54,4 +71,5 @@ module.exports = {
     listMovies,
     deleteAllMovies,
     deleteMovie,
+    updateMovie,
 }

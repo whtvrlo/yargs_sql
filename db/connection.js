@@ -3,9 +3,6 @@ const { Sequelize } = require("sequelize");
 
 const connection = new Sequelize (process.env.CC_DB);
 
-
-
-
 // const connection = new Sequelize(
 //     process.env.DB_NAME,
 //     process.env.DB_USER,

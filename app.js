@@ -2,7 +2,7 @@ require("dotenv").config();
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const commandLineInput = yargs(hideBin(process.argv)).argv;
-const { addMovie, listMovies, deleteAllMovies, deleteMovie } = require("./utils/index")
+const { addMovie, listMovies, deleteAllMovies, deleteMovie, updateMovie } = require("./utils/index")
 
 const { Movie } = require("./models/models");
 console.log(Movie);
@@ -21,6 +21,7 @@ const app = async(commandLineInput) => {
 
 
     try {
+        // ADD
         if (commandLineInput.add) {
             await Movie.sync({alter: true});
             await addMovie({title: commandLineInput.title,
@@ -37,15 +38,17 @@ const app = async(commandLineInput) => {
             actor: commandLineInput.actor,
             rating: commandLineInput.rating
         });
-        listMovies()
         // SINGLE DELETE
         } else if (commandLineInput.delete){
             await Movie.sync({alter: true});
-            await deleteMovie({
-                title: commandLineInput.title,
-                actor: commandLineInput.actor,
-                rating: commandLineInput.rating
-            });;
+            const args = {
+                title: commandLineInput.title
+            };
+            await deleteMovie(args);
+            UPDATE
+        } else if (commandLineInput.update) {
+            await updateMovie({title: commandLineInput.title},{updateTitle: commandLineInput.title})
+            
         }
         connection.close();
         process.exit();
