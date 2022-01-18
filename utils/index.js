@@ -23,9 +23,9 @@ const deleteAllMovies = async (movieObj) => {
 }
 
 // DESTROY SINGLE INSTANCE FUNCTION
-const deleteMovie = async (where) =>{
+const deleteMovie = async (title) =>{
     try {
-        const movie = await Movie.findOne({ where });
+        const movie = await Movie.findOne({ where: title });
         await movie.destroy();
         console.log(`${movie.title} has been succesfully deleted.`);
         console.log(`Updated list of movies:`);
@@ -48,21 +48,18 @@ const listMovies = async () => {
     }
 }
 
-// // UPDATE MOVIE
-const updateMovie = async (where, update) => {
+// // UPDATE MOVIE ;
+const updateMovie = async (movieTitle) => {
     try {
-    const movie = await Movie.findOne({ where });
-    const newMovie = await movie.update(update); 
-    console.log(JSON.stringify(newMovie, null, 2));
-    return newMovie;
-        
+    await Movie.update(
+        {title: movieTitle.updatedTitle},
+        {where: {title: movieTitle.currentTitle} }
+        );  
     } catch (error) {
         console.log(error)
         
     }
-
 }
-
 
 
 

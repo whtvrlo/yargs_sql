@@ -9,6 +9,7 @@ console.log(Movie);
 
 
 const { connection } = require("./db/connection");
+const { argv } = require("yargs");
 // const { addMovie } = require("./utils/index")
 
 const app = async(commandLineInput) => {
@@ -45,9 +46,16 @@ const app = async(commandLineInput) => {
                 title: commandLineInput.title
             };
             await deleteMovie(args);
-            UPDATE
+        // UPDATE
         } else if (commandLineInput.update) {
-            await updateMovie({title: commandLineInput.title},{updateTitle: commandLineInput.title})
+            const myMovieTitle = {
+                currentTitle: commandLineInput.title,
+                updatedTitle: commandLineInput.updateTitle,
+            };
+            await updateMovie(myMovieTitle)
+            console.log(`Title updated to ${commandLineInput.updateTitle}`) 
+
+
             
         }
         connection.close();
